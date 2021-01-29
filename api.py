@@ -7,47 +7,48 @@ import pandas as pd
 
 #loading execl file
 pd.set_option('display.max_colwidth', -1) #prvent url cutted
-drug_url = pd.read_excel('api.xlsx', usecols='F')
-drug_name = pd.read_excel('api.xlsx', usecols='B') #열 읽기, skiprows=[]는 행 읽기
+drug = pd.read_excel('api.xlsx')
+# drug_url = pd.read_excel('api.xlsx', usecols='F')
+# drug_name = pd.read_excel('api.xlsx', usecols='B') #열 읽기, skiprows=[]는 행 읽기
 
 #appointing url & name of image & using for
 for i in range(0, 23828):
-    url = drug_url.iloc[i]
-    image_name = drug_name.iloc[i] + ".jpg"
+    number = drug.iloc[i,0]
+    url = drug.iloc[i, 5]
+    image_name_file = drug.iloc[i, 1]
+    image_name = drug.iloc[i, 1] + ".jpg"
 
-#measuring time
-start = time.time()
+    #making image file with 품목번호
+    base_dir = os.getcwd()
+    path = os.path.join(base_dir, str(number))
+    os.mkdir(path)
 
-#downloading image
-urllib.request.urlretrieve(url, image_name)
+    #여기서부터 수정해야됨 만들어진 파일에 사진 저장
+    #downloading image 
+    urllib.request.urlretrieve(url, image_name)
+    print(image_name + " dwonloading complete")
 
-#printing time
-print(time.time()- start)
+    #open image using open_cv
+    img_color = cv2.imread(image_name, cv2.IMREAD_COLOR)
+    cv2.imshow(image_name, img_color)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
-print(image_name + " dwonloading complete")
+    #cutting image
+    cut = img_color.copy()
+    cut = img_color[30:340, 65:720]
+    cv2.imshow(image_name, cut)
 
-#open image using open_cv
-img_color = cv2.imread(image_name, cv2.IMREAD_COLOR)
+    cv2.imwrite('test_cut.jpg', cut)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
-cv2.imshow(image_name, img_color)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    #making edge
+    canny = cv2.Canny(cut, 310, 255)
 
-#cutting image
-cut = img_color.copy()
-cut = img_color[30:340, 65:720]
-cv2.imshow(image_name, cut)
-
-cv2.imwrite('test_cut.jpg', cut)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-#making edge
-canny = cv2.Canny(cut, 310, 255)
-
-cv2.imshow("canny", canny)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    cv2.imshow("canny", canny)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 # saving - made edge - jpg
 # path = r'C:\Users\swj35\OneDrive\바탕 화면\drug-classification-application\edge'
