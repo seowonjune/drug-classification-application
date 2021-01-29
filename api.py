@@ -6,13 +6,14 @@ import cv2
 import pandas as pd
 
 #loading execl file
-drug_name = pd.read_excel(r'C:\Users\swj35\OneDrive\바탕 화면\drug-classification-application\공공데이터개방_낱알식별목록.xlsx', usecols=[2]) #열 읽기, skiprows=[]는 행 읽기
+pd.set_option('display.max_colwidth', -1) #prvent url cutted
+drug_url = pd.read_excel('api.xlsx', usecols='F')
+drug_name = pd.read_excel('api.xlsx', usecols='B') #열 읽기, skiprows=[]는 행 읽기
 
-drug_url = pd.read_excel(r'C:\Users\swj35\OneDrive\바탕 화면\drug-classification-application\공공데이터개방_낱알식별목록.xlsx', usecols=[5])
-
-#appointing url & name of image
-url = "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/1Muwq7fAuBq"
-image_name = "test.jpg"
+#appointing url & name of image & using for
+for i in range(0, 23828):
+    url = drug_url.iloc[i]
+    image_name = drug_name.iloc[i] + ".jpg"
 
 #measuring time
 start = time.time()
