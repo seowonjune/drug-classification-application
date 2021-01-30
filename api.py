@@ -4,6 +4,7 @@ import os
 from PIL import Image
 import cv2 
 import pandas as pd
+import shutil
 
 #loading execl file
 pd.set_option('display.max_colwidth', -1) #prvent url cutted
@@ -23,10 +24,11 @@ for i in range(0, 23828):
     path = os.path.join(base_dir, str(number))
     os.mkdir(path)
 
-    #여기서부터 수정해야됨 만들어진 파일에 사진 저장
     #downloading image 
     urllib.request.urlretrieve(url, image_name)
-    print(image_name + " dwonloading complete")
+    print(image_name_file + " dwonloading complete")
+    shutil.move(os.getcwd + '\\' + image_name, path + '\\' + image_name)
+    print( image_name_file + "moved")
 
     #open image using open_cv
     img_color = cv2.imread(image_name, cv2.IMREAD_COLOR)
