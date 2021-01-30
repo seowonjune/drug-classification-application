@@ -53,9 +53,7 @@ for i in range(0, 23828):
     cv2.destroyAllWindows()
 
 # saving - made edge - jpg
-# path = r'C:\Users\swj35\OneDrive\바탕 화면\drug-classification-application\edge'
-# #image_name_path = image_name + "_path"
-# cv2.imwrite(os.path.join(path , "test_edge.jpg"), canny)
+cv2.imwrite(os.path.join(path + '\\' , "test_edge.jpg"), canny)
 
 cv2.imwrite('test_edge.jpg', canny)
 
